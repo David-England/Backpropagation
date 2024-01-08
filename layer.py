@@ -16,5 +16,17 @@ class Layer:
         if input.shape != (self.n_in, 1):
             raise ValueError("Layer received array of incorrect size.")
         
+        self.a_in = input
         self.z = np.dot(self.w, input)
-        self.a = np.apply_along_axis(self.sigma, 0, self.z)
+
+        return np.apply_along_axis(self.sigma, 0, self.z)
+
+    def calculate_gradient(self, dc_da: np.ndarray):
+        if dc_da.shape != (self.n_out, 1):
+            raise ValueError("Layer received array of incorrect size during backpropagation.")
+        
+        dc_dz = np.dot(dc_da, self.d_sigma(self.z))
+        self.dc_dw = np.dot(dc_dz, self.a_in.T)
+
+        # Return outgoing dC/da value:
+        return np.dot(dc_dz, self.w)
