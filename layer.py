@@ -19,14 +19,14 @@ class Layer:
         self.a_in = input
         self.z = np.dot(self.w, input)
 
-        return np.apply_along_axis(self.sigma, 0, self.z)
+        return np.vectorize(self.sigma)(self.z)
 
     def calculate_gradient(self, dc_da: np.ndarray):
-        if dc_da.shape != (self.n_out, 1):
+        if dc_da.shape != (1, self.n_out):
             raise ValueError("Layer received array of incorrect size during backpropagation.")
         
-        dc_dz = np.dot(dc_da, self.d_sigma(self.z))
-        self.dc_dw = np.dot(dc_dz, self.a_in.T)
+        dc_dz = dc_da * np.vectorize(self.d_sigma)(self.z.T)
+        self.dc_dw = np.dot(dc_dz.T, self.a_in.T)
 
         # Return outgoing dC/da value:
         return np.dot(dc_dz, self.w)
