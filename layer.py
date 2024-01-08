@@ -30,3 +30,6 @@ class Layer:
 
         # Return outgoing dC/da value:
         return np.dot(dc_dz, self.w)
+    
+    def update_weights(self, step_size: float):
+        self.w -= step_size * self.dc_dw
