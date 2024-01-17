@@ -2,9 +2,10 @@ import numpy as np
 
 
 class Layer:
-    def __init__(self, n: int, n_prev: int, sigma, d_sigma):
+    def __init__(self, n: int, n_prev: int, sigma, d_sigma, batch_size=1):
         self.n_in = n_prev
         self.n_out = n
+        self.batch_size = batch_size
 
         self.sigma = sigma
         self.d_sigma = d_sigma
@@ -13,7 +14,7 @@ class Layer:
         self.w = np.random.randn(n, n_prev)
     
     def run(self, input: np.ndarray):
-        if input.shape != (self.n_in, 1):
+        if input.shape != (self.n_in, self.batch_size):
             raise ValueError("Layer received array of incorrect size.")
         
         self.a_in = input
@@ -25,7 +26,7 @@ class Layer:
         if dc_da.shape != (1, self.n_out):
             raise ValueError("Layer received array of incorrect size during backpropagation.")
         
-        dc_dz = dc_da * np.vectorize(self.d_sigma)(self.z.T)
+        dc_dz = dc_da * np.vectorize(self.d_sigma)(self.z.T).mean(axis=0)
         self.dc_dw = np.dot(dc_dz.T, self.a_in.T)
 
         # Return outgoing dC/da value:

@@ -3,7 +3,8 @@ from backpropagation import Layer
 
 
 class Net:
-    def __init__(self, n_data: int, list_layer_sizes: list[int], list_sigmas, list_d_sigmas, d_cost):
+    def __init__(self, n_data: int, list_layer_sizes: list[int], list_sigmas, list_d_sigmas,
+                 d_cost, batch_size=1):
         for x in list_layer_sizes:
             if (type(x) != int):
                 raise TypeError("Net: please specify the node layer sizes using only integers.")
@@ -14,6 +15,7 @@ class Net:
         
         self.d_cost = d_cost
         self.n_data = n_data
+        self.batch_size = batch_size
         
         self.layers = [Layer(list_layer_sizes[0], n_data, list_sigmas[0], list_d_sigmas[0])]
         for i in range(1, len(list_layer_sizes)):
@@ -21,7 +23,7 @@ class Net:
                                      list_sigmas[i], list_d_sigmas[i]))
         
     def run(self, x: np.ndarray):
-        if x.shape != (self.n_data, 1):
+        if x.shape != (self.n_data, self.batch_size):
             raise ValueError("Net: data has incorrect dimensions.")
         
         a = x
