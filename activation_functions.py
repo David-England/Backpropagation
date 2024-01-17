@@ -5,11 +5,11 @@ import numpy as np
 class ActivationFunction(ABC):
     @abstractmethod
     def sigma(x):
-        pass
+        raise NotImplementedError("Please implement sigma()")
 
     @abstractmethod
     def d_sigma(x):
-        pass
+        raise NotImplementedError("Please implement d_sigma()")
 
 
 class ReLU(ActivationFunction):
