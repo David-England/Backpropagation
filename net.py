@@ -17,10 +17,11 @@ class Net:
         self.n_data = n_data
         self.batch_size = batch_size
         
-        self.layers = [Layer(list_layer_sizes[0], n_data, list_sigmas[0], list_d_sigmas[0])]
+        self.layers = [Layer(list_layer_sizes[0], n_data, list_sigmas[0], list_d_sigmas[0],
+                             batch_size)]
         for i in range(1, len(list_layer_sizes)):
             self.layers.append(Layer(list_layer_sizes[i], list_layer_sizes[i - 1],
-                                     list_sigmas[i], list_d_sigmas[i]))
+                                     list_sigmas[i], list_d_sigmas[i], batch_size))
         
     def run(self, x: np.ndarray):
         if x.shape != (self.n_data, self.batch_size):
