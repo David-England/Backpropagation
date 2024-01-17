@@ -1,14 +1,14 @@
 import numpy as np
+from backpropagation import ActivationFunction
 
 
 class Layer:
-    def __init__(self, n: int, n_prev: int, sigma, d_sigma, batch_size=1):
+    def __init__(self, n: int, n_prev: int, activation: ActivationFunction, batch_size=1):
         self.n_in = n_prev
         self.n_out = n
         self.batch_size = batch_size
 
-        self.sigma = sigma
-        self.d_sigma = d_sigma
+        self.activation = activation
 
         np.random.seed(4)
         self.w = np.random.randn(n, n_prev)
@@ -20,13 +20,13 @@ class Layer:
         self.a_in = input
         self.z = np.dot(self.w, input)
 
-        return np.vectorize(self.sigma)(self.z)
+        return np.vectorize(self.activation.sigma)(self.z)
 
     def calculate_gradient(self, dc_da: np.ndarray):
         if dc_da.shape != (self.batch_size, self.n_out):
             raise ValueError("Layer received array of incorrect size during backpropagation.")
         
-        dc_dz = dc_da * np.vectorize(self.d_sigma)(self.z.T)
+        dc_dz = dc_da * np.vectorize(self.activation.d_sigma)(self.z.T)
         self.dc_dw = np.dot(dc_dz.T, self.a_in.T)
 
         # Return outgoing dC/da value:
