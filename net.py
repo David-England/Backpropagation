@@ -36,6 +36,9 @@ class Net:
     def train(self, x: np.ndarray, y_true: np.ndarray):
         dc_da = self.d_cost(y_true, self.run(x))
 
+        if dc_da.shape != (self.batch_size, self.layers[-1].n_out):
+            raise ValueError("Net: d_cost() returns an array of incorrect dimensions.")
+
         for i in range(len(self.layers), 0, -1):
             dc_da = self.layers[i - 1].calculate_gradient(dc_da)
         
