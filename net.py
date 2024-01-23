@@ -3,7 +3,7 @@ from backpropagation import ActivationFunction, Layer
 
 
 class Net:
-    def __init__(self, n_data: int, list_layer_sizes: list[int],
+    def __init__(self, dim_data: int, list_layer_sizes: list[int],
                  list_activations: list[ActivationFunction], d_cost, batch_size=1):
         for x in list_layer_sizes:
             if (type(x) != int):
@@ -13,16 +13,16 @@ class Net:
             raise ValueError("Net: all supplied lists must be the same length.")
         
         self.d_cost = d_cost
-        self.n_data = n_data
+        self.dim_data = dim_data
         self.batch_size = batch_size
         
-        self.layers = [Layer(list_layer_sizes[0], n_data, list_activations[0], batch_size)]
+        self.layers = [Layer(list_layer_sizes[0], dim_data, list_activations[0], batch_size)]
         for i in range(1, len(list_layer_sizes)):
             self.layers.append(Layer(list_layer_sizes[i], list_layer_sizes[i - 1],
                                      list_activations[i], batch_size))
         
     def run(self, x: np.ndarray):
-        if x.shape != (self.n_data, self.batch_size):
+        if x.shape != (self.dim_data, self.batch_size):
             raise ValueError("Net: data has incorrect dimensions.")
         
         a = x
