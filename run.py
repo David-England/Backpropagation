@@ -1,5 +1,6 @@
 import numpy as np
 from sklearn.datasets import make_classification
+from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 from backpropagation import Net
 from backpropagation.activation_functions import Sigmoid
@@ -21,4 +22,7 @@ n.train(x_train.T, y_train.reshape(1, -1))
 filter_point5 = np.vectorize(lambda x: 1 if x > .5 else 0)
 predicted = filter_point5(n.run(x_test.T))
 
-print(predicted.reshape(-1)[:25], y_test[:25])
+cm = confusion_matrix(y_test, predicted.reshape(-1))
+
+print(cm)
+print(cm.trace() / cm.sum())
