@@ -30,8 +30,21 @@ class Net:
             a = self.layers[i].run(a)
 
         return a
-        
+
     def train(self, x: np.ndarray, y_true: np.ndarray):
+        if x.shape[0] != self.dim_data:
+            raise ValueError("Net: data has incorrect number of features.")
+        if y_true.shape[0] != 1:
+            raise ValueError("Net: target array should have shape 1 x N.")
+        if x.shape[1] != y_true.shape[1]:
+            raise ValueError("Net: data and targets have different numbers of data points.")
+
+        nx = x.shape[1]
+
+        for b in range(0, nx - (nx % self.batch_size), self.batch_size):
+            self.__train_batch(x[:, b : b + self.batch_size], y_true[:, b : b + self.batch_size])
+
+    def __train_batch(self, x: np.ndarray, y_true: np.ndarray):
         dc_da = self.d_cost(y_true, self.run(x))
 
         if dc_da.shape != (self.batch_size, self.layers[-1].n_out):
