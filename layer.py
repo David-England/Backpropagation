@@ -14,8 +14,8 @@ class Layer:
         self.w = np.random.randn(n, n_prev + 1)
     
     def run(self, input: np.ndarray):
-        if input.shape != (self.n_in, self.batch_size):
-            raise ValueError("Layer received array of incorrect size.")
+        if input.shape[0] != self.n_in:
+            raise ValueError("Layer received array of incorrect number of rows.")
         
         self.a_in = input
         self.z = np.dot(self.w, self.__add_intercept_row(input))

@@ -22,8 +22,8 @@ class Net:
                                      list_activations[i], batch_size))
         
     def run(self, x: np.ndarray):
-        if x.shape != (self.dim_data, self.batch_size):
-            raise ValueError("Net: data has incorrect dimensions.")
+        if x.shape[0] != self.dim_data:
+            raise ValueError("Net: data has incorrect number of features.")
         
         a = x
         for i in range(len(self.layers)):
