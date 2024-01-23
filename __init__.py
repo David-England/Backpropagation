@@ -1,2 +1,2 @@
-from layer import Layer
-from net import Net
+from backpropagation.layer import Layer
+from backpropagation.net import Net
