@@ -1,5 +1,5 @@
 import numpy as np
-from backpropagation import ActivationFunction
+from backpropagation.activation_functions import ActivationFunction
 
 
 class Layer:

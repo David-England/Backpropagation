@@ -1,7 +1,8 @@
 import numpy as np
 from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
-from backpropagation import Net, Sigmoid
+from backpropagation import Net
+from backpropagation.activation_functions import Sigmoid
 
 # ---- 1. LOADING
 x, y = make_classification(n_samples=8192, n_features=4, n_informative=4, n_redundant=0, random_state=4)

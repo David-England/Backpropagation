@@ -1,5 +1,6 @@
 import numpy as np
-from backpropagation import ActivationFunction, Layer
+from backpropagation import Layer
+from backpropagation.activation_functions import ActivationFunction
 
 
 class Net:
